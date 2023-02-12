@@ -59,8 +59,10 @@ public class Conversation {
         if (finished) return;
         if (endClauses != null) {
             for (Clause clause : endClauses) {
-                if (clause instanceof Clause.Ticking tickingClause)
+                if (clause instanceof Clause.Ticking) {
+                    Clause.Ticking tickingClause = (Clause.Ticking) clause;
                     tickingClause.tick();
+                }
 
                 if (clause.hasBeenTriggered()) {
                     if (clause.getTriggerMessage() != null)
