@@ -2,6 +2,7 @@ package me.illusion.conversations.api;
 
 import me.illusion.conversations.api.util.Constants;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
@@ -78,8 +79,8 @@ public class Prompt<A> {
      *
      * @apiNote Can be null, will default to {@link Constants#INVALID_INPUT_MESSAGE}.
      */
-    public Prompt<A> conversionFailText(@NotNull Component component) {
-        this.conversionFailedText = component;
+    public Prompt<A> conversionFailText(@NotNull String component) {
+        this.conversionFailedText = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
         return this;
     }
 
@@ -90,8 +91,8 @@ public class Prompt<A> {
      *
      * @apiNote Can be null, will default to {@link Constants#INVALID_INPUT_MESSAGE}.
      */
-    public Prompt<A> filterFailText(@NotNull Component component) {
-        this.filterFailedText = component;
+    public Prompt<A> filterFailText(@NotNull String component) {
+        this.filterFailedText = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
         return this;
     }
 
@@ -102,8 +103,8 @@ public class Prompt<A> {
      *
      * @apiNote If null, won't display anything.
      */
-    public Prompt<A> allAttemptsFailedText(@NotNull Component component) {
-        this.attemptsOverText = component;
+    public Prompt<A> allAttemptsFailedText(@NotNull String component) {
+        this.attemptsOverText = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
         return this;
     }
 

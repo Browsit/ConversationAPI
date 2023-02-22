@@ -17,7 +17,7 @@ import java.util.Iterator;
  * <p>
  * The Bukkit {@link ConversationsForwarder}.
  */
-public class BukkitConversationsForwarder implements ConversationsForwarder<JavaPlugin>, Listener {
+class BukkitConversationsForwarder implements ConversationsForwarder<JavaPlugin>, Listener {
 
     @Override
     public void register(JavaPlugin base) {

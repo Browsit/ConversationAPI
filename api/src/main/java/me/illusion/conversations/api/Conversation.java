@@ -1,14 +1,14 @@
 package me.illusion.conversations.api;
 
+import java.util.ArrayList;
+import java.util.UUID;
 import me.illusion.conversations.api.clause.Clause;
 import me.illusion.conversations.api.util.StringValidator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by Illusion on 2/8/2023
@@ -31,19 +31,23 @@ public class Conversation {
     private Prompt<?> currentPrompt;
 
     /**
-     * @param audience Audience that participates in this conversation.
+     * @param participant Audience that participates in this conversation.
      */
-    public Conversation(Audience audience) {
-        this.audience = audience;
+    public Conversation(UUID participant) {
+        this.audience = Conversations.provider().player(participant);
     }
 
     /**
      * Actually executes the conversation.
      */
     public void run() {
-        if (!Conversations.isRegistered(this)) Conversations.registerConversation(this);
+        if (!Conversations.isRegistered(this)) {
+            Conversations.registerConversation(this);
+        }
 
-        if (finished) throw new IllegalStateException("Can't run finished conversation multiple times");
+        if (finished) {
+            throw new IllegalStateException("Can't run finished conversation multiple times");
+        }
 
         currentPrompt = nextPrompt();
         if (currentPrompt != null) {
@@ -55,8 +59,12 @@ public class Conversation {
      * Ticks the conversation, used for updating timers etc.
      */
     protected void tick() {
-        if (!Conversations.isRegistered(this)) return;
-        if (finished) return;
+        if (!Conversations.isRegistered(this)) {
+            return;
+        }
+        if (finished) {
+            return;
+        }
         if (endClauses != null) {
             for (Clause clause : endClauses) {
                 if (clause instanceof Clause.Ticking) {
@@ -65,8 +73,9 @@ public class Conversation {
                 }
 
                 if (clause.hasBeenTriggered()) {
-                    if (clause.getTriggerMessage() != null)
+                    if (clause.getTriggerMessage() != null) {
                         audience.sendMessage(clause.getTriggerMessage());
+                    }
                     Conversations.endConversation(this);
                     finished = true;
                     return;
@@ -79,7 +88,9 @@ public class Conversation {
      * Adds a {@link Prompt} to the conversation.
      */
     public Conversation prompt(Prompt<?> prompt) {
-        if (this.prompts == null) this.prompts = new ArrayList<>();
+        if (this.prompts == null) {
+            this.prompts = new ArrayList<>();
+        }
 
         prompt.setConversation(this);
         prompt.setId(prompts.size() + 1);
@@ -88,11 +99,12 @@ public class Conversation {
     }
 
     /**
-     * Specifies a clause for when this conversation should end.
-     * There's no limit to the amount of clauses you can add.
+     * Specifies a clause for when this conversation should end. There's no limit to the amount of clauses you can add.
      */
     public Conversation endWhen(Clause clause) {
-        if (endClauses == null) this.endClauses = new ArrayList<>();
+        if (endClauses == null) {
+            this.endClauses = new ArrayList<>();
+        }
         this.endClauses.add(clause);
         return this;
     }
@@ -102,22 +114,20 @@ public class Conversation {
      *
      * @apiNote Can be null.
      */
-    public Conversation finishingText(Component component) {
-        this.onComplete = component;
+    public Conversation finishingText(String component) {
+        this.onComplete = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
         return this;
     }
 
     /**
      * A name that gets prepended to each line of this conversation.
      * <p>
-     * example;
-     * name = Fish:
-     * prompt = Hello
+     * example; name = Fish: prompt = Hello
      * <p>
      * Result = Fish: Hello
      */
-    public Conversation by(Component name) {
-        this.by = name;
+    public Conversation by(String name) {
+        this.by = LegacyComponentSerializer.legacyAmpersand().deserialize(name);
         return this;
     }
 
@@ -172,8 +182,9 @@ public class Conversation {
 
         if (!currentPrompt.shouldHandle()) {
             Conversations.endConversation(this);
-            if (currentPrompt.getAttemptsOverText() != null)
+            if (currentPrompt.getAttemptsOverText() != null) {
                 audience.sendMessage(currentPrompt.getAttemptsOverText());
+            }
             return;
         }
         currentPrompt.handleInput(clean);
@@ -185,9 +196,11 @@ public class Conversation {
             Conversations.endConversation(this);
             finished = true;
             if (onComplete != null) {
-                if (by != null)
+                if (by != null) {
                     audience.sendMessage(by.append(Component.text(" ").append(onComplete)));
-                else audience.sendMessage(onComplete);
+                } else {
+                    audience.sendMessage(onComplete);
+                }
             }
             return;
         }
@@ -199,7 +212,9 @@ public class Conversation {
     private Prompt<?> nextPrompt() {
         int id = currentPrompt == null ? 0 : currentPrompt.getId();
         for (Prompt<?> prompt : prompts) {
-            if (prompt.getId() == id + 1) return prompt;
+            if (prompt.getId() == id + 1) {
+                return prompt;
+            }
         }
         return null;
     }
