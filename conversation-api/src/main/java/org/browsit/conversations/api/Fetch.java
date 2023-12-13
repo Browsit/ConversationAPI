@@ -1,6 +1,6 @@
 package org.browsit.conversations.api;
 
-import net.kyori.adventure.audience.Audience;
+import org.browsit.conversations.api.audience.ConversationAudience;
 
 /**
  * @author Illusion
@@ -8,5 +8,5 @@ import net.kyori.adventure.audience.Audience;
  */
 public interface Fetch<A> {
 
-    void execute(A input, Audience sender);
+    void execute(A input, ConversationAudience sender);
 }

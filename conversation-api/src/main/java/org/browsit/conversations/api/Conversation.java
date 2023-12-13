@@ -2,6 +2,8 @@ package org.browsit.conversations.api;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import org.browsit.conversations.api.audience.AdventureConversationAudience;
+import org.browsit.conversations.api.audience.ConversationAudience;
 import org.browsit.conversations.api.clause.Clause;
 import org.browsit.conversations.api.util.StringValidator;
 import net.kyori.adventure.audience.Audience;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class Conversation {
 
     private final Audience audience;
+    private final ConversationAudience wrappedAudience;
 
     private boolean finished, echo;
 
@@ -36,6 +39,7 @@ public class Conversation {
      */
     public Conversation(UUID participant) {
         this.audience = Conversations.provider().player(participant);
+        this.wrappedAudience = new AdventureConversationAudience(audience);
     }
 
     /**
@@ -176,6 +180,10 @@ public class Conversation {
 
     protected Audience getAudience() {
         return audience;
+    }
+
+    protected ConversationAudience getWrappedAudience() {
+        return wrappedAudience;
     }
 
     protected void handleInput(String input) {

@@ -136,7 +136,7 @@ public class Prompt<A> {
 
         if (inputFilter != null) {
             if (inputFilter.test(converted)) {
-                inputHandler.execute(converted, conversation.getAudience());
+                inputHandler.execute(converted, conversation.getWrappedAudience());
                 complete = true;
                 conversation.next();
                 return;
@@ -144,7 +144,7 @@ public class Prompt<A> {
             conversation.getAudience().sendMessage(filterFailedText);
             return;
         }
-        inputHandler.execute(converted, conversation.getAudience());
+        inputHandler.execute(converted, conversation.getWrappedAudience());
         complete = true;
         conversation.next();
     }
