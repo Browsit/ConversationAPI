@@ -4,8 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author Illusion
- * created on 2/9/2023
+ * @author Illusion created on 2/9/2023
  */
 public class TimeClause implements Clause.Ticking {
 

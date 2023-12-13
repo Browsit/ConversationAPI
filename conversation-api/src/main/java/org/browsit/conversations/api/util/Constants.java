@@ -3,8 +3,7 @@ package org.browsit.conversations.api.util;
 import net.kyori.adventure.text.Component;
 
 /**
- * @author Illusion
- * created on 2/9/2023
+ * @author Illusion created on 2/9/2023
  */
 public class Constants {
 

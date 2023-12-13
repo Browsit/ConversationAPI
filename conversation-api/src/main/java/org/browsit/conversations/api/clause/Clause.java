@@ -3,8 +3,7 @@ package org.browsit.conversations.api.clause;
 import net.kyori.adventure.text.Component;
 
 /**
- * @author Illusion
- * created on 2/8/2023
+ * @author Illusion created on 2/8/2023
  */
 public interface Clause {
 

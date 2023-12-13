@@ -1,15 +1,13 @@
 package org.browsit.conversations.api;
 
-import org.browsit.conversations.api.util.Constants;
+import java.util.function.Predicate;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.browsit.conversations.api.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Predicate;
-
 /**
- * @author Illusion
- * created on 2/8/2023
+ * @author Illusion created on 2/8/2023
  */
 public class Prompt<A> {
 
@@ -32,8 +30,7 @@ public class Prompt<A> {
     }
 
     /**
-     * The handler/converter which takes the String input and converts it into
-     * the required type before passing it down to a {@link #filter(Predicate)})}.
+     * The handler/converter which takes the String input and converts it into the required type before passing it down to a {@link #filter(Predicate)})}.
      *
      * @apiNote Can't be null.
      */
@@ -43,8 +40,7 @@ public class Prompt<A> {
     }
 
     /**
-     * The filter allows you to take the converted input and validate it, before it
-     * will be passed down to {@link #fetch(Fetch)} (Fetch)}.
+     * The filter allows you to take the converted input and validate it, before it will be passed down to {@link #fetch(Fetch)} (Fetch)}.
      * <p>
      * e.g: Check if age > 18.
      *
@@ -56,9 +52,8 @@ public class Prompt<A> {
     }
 
     /**
-     * The last pass, here is where you actually define what you want
-     * to do with the given input. This happens after the input has been
-     * converted, and if necessary filtered.
+     * The last pass, here is where you actually define what you want to do with the given input. This happens after the input has been converted, and if
+     * necessary filtered.
      */
     public Prompt<A> fetch(Fetch<A> input) {
         this.inputHandler = input;

@@ -13,8 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Iterator;
 
 /**
- * @author Illusion
- * created on 2/9/2023
+ * @author Illusion created on 2/9/2023
  * <p>
  * The Bukkit {@link ConversationsForwarder}.
  */
@@ -32,8 +31,9 @@ public class BukkitConversationsForwarder implements ConversationsForwarder<Java
         while (recipients.hasNext()) {
             Player recipient = recipients.next();
             Conversations.getConversationOf(recipient.getUniqueId()).ifPresent(conversation -> {
-                if (conversation.getChatVisibility() != ChatVisibility.ALL)
+                if (conversation.getChatVisibility() != ChatVisibility.ALL) {
                     recipients.remove();
+                }
             });
         }
 
@@ -41,8 +41,9 @@ public class BukkitConversationsForwarder implements ConversationsForwarder<Java
         Player chatter = event.getPlayer();
 
         Conversations.getConversationOf(chatter.getUniqueId()).ifPresent(conversation -> {
-            if (conversation.echoOn())
+            if (conversation.echoOn()) {
                 chatter.sendMessage(event.getMessage());
+            }
 
             forwardInput(conversation, chatter.getUniqueId(), event.getMessage(), () -> {
                 event.setCancelled(true);

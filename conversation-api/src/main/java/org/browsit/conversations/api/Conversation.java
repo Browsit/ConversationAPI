@@ -1,20 +1,20 @@
 package org.browsit.conversations.api;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import org.browsit.conversations.api.audience.AdventureConversationAudience;
-import org.browsit.conversations.api.audience.ConversationAudience;
-import org.browsit.conversations.api.clause.Clause;
-import org.browsit.conversations.api.util.StringValidator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.browsit.conversations.api.audience.AdventureConversationAudience;
+import org.browsit.conversations.api.audience.ConversationAudience;
+import org.browsit.conversations.api.clause.Clause;
+import org.browsit.conversations.api.util.StringValidator;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author Illusion
- * created on 2/8/2023
+ * @author Illusion created on 2/8/2023
  */
 public class Conversation {
 
@@ -27,11 +27,11 @@ public class Conversation {
     private Component by, onComplete;
 
     @Nullable
-    private ArrayList<Clause> endClauses;
+    private List<Clause> endClauses;
 
     private ChatVisibility chatVisibility = ChatVisibility.ALL;
 
-    private ArrayList<Prompt<?>> prompts;
+    private List<Prompt<?>> prompts;
     private Prompt<?> currentPrompt;
 
     /**

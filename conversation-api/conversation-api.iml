@@ -6,7 +6,11 @@
         <autoDetectTypes>
           <platformType>ADVENTURE</platformType>
         </autoDetectTypes>
+        <projectReimportVersion>1</projectReimportVersion>
       </configuration>
     </facet>
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="980ee2d7-a806-42a1-992b-a6889ae525dd" />
   </component>
 </module>
