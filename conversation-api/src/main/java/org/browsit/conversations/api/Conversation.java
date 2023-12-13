@@ -115,8 +115,8 @@ public class Conversation {
      *
      * @apiNote Can be null.
      */
-    public Conversation finishingText(String component) {
-        this.onComplete = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
+    public Conversation finishingText(String text) {
+        this.onComplete = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
         return this;
     }
 

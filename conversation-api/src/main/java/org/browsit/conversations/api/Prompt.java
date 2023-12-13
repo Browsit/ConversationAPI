@@ -27,8 +27,8 @@ public class Prompt<A> {
     private Component conversionFailedText, filterFailedText = Constants.INVALID_INPUT_MESSAGE;
     private Component attemptsOverText;
 
-    public Prompt(Component text) {
-        this.text = text;
+    public Prompt(String text) {
+        this.text = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
     }
 
     /**
@@ -80,8 +80,8 @@ public class Prompt<A> {
      *
      * @apiNote Can be null, will default to {@link Constants#INVALID_INPUT_MESSAGE}.
      */
-    public Prompt<A> conversionFailText(@NotNull String component) {
-        this.conversionFailedText = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
+    public Prompt<A> conversionFailText(@NotNull String text) {
+        this.conversionFailedText = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
         return this;
     }
 
@@ -92,8 +92,8 @@ public class Prompt<A> {
      *
      * @apiNote Can be null, will default to {@link Constants#INVALID_INPUT_MESSAGE}.
      */
-    public Prompt<A> filterFailText(@NotNull String component) {
-        this.filterFailedText = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
+    public Prompt<A> filterFailText(@NotNull String text) {
+        this.filterFailedText = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
         return this;
     }
 
@@ -104,8 +104,8 @@ public class Prompt<A> {
      *
      * @apiNote If null, won't display anything.
      */
-    public Prompt<A> allAttemptsFailedText(@NotNull String component) {
-        this.attemptsOverText = LegacyComponentSerializer.legacyAmpersand().deserialize(component);
+    public Prompt<A> allAttemptsFailedText(@NotNull String text) {
+        this.attemptsOverText = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
         return this;
     }
 
