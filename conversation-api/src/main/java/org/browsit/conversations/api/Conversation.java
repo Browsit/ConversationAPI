@@ -11,7 +11,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Created by Illusion on 2/8/2023
+ * @author Illusion
+ * created on 2/8/2023
  */
 public class Conversation {
 

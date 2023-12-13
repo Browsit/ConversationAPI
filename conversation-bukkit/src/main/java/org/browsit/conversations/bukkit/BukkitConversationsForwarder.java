@@ -13,7 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Iterator;
 
 /**
- * Created by Illusion on 2/9/2023
+ * @author Illusion
+ * created on 2/9/2023
  * <p>
  * The Bukkit {@link ConversationsForwarder}.
  */

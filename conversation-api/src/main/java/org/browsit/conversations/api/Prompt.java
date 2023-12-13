@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Predicate;
 
 /**
- * Created by Illusion on 2/8/2023
+ * @author Illusion
+ * created on 2/8/2023
  */
 public class Prompt<A> {
 

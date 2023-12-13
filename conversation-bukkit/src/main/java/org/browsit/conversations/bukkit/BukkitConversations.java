@@ -5,7 +5,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Created by Illusion on 2/16/2023
+ * @author Illusion
+ * created on 2/16/2023
  * <p>
  * Bukkit wrapper for {@link Conversations}.
  */

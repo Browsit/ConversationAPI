@@ -4,7 +4,8 @@ import java.util.UUID;
 
 
 /**
- * Created by Illusion on 2/9/2023
+ * @author Illusion
+ * created on 2/9/2023
  * <p>
  * Dummy interface to forward input coming in from platform-dependent events to
  * {@link Conversations}.

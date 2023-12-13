@@ -3,10 +3,12 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>me.illusion</groupId>
-    <artifactId>Conversation</artifactId>
+    <groupId>org.browsit</groupId>
+    <artifactId>conversation</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <name>Conversation API</name>
+    <url>https://github.com/Browsit/ConversationAPI</url>
     <modules>
         <module>conversation-api</module>
         <module>conversation-bukkit</module>

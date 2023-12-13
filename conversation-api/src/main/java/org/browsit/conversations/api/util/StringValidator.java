@@ -3,7 +3,8 @@ package me.illusion.conversations.api.util;
 import java.util.regex.Pattern;
 
 /**
- * Created by Illusion on 2/9/2023
+ * @author Illusion
+ * created on 2/9/2023
  */
 public final class StringValidator {
 

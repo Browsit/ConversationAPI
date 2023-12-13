@@ -1,8 +1,8 @@
-# AdventureConversations
-A conversations API, for Bukkit & Fabric, built with [Kyori's Adventure](https://github.com/KyoriPowered/adventure).
+# Conversation API
+A compact API for conversations on Bukkit and Fabric, built with [Kyori's Adventure](https://github.com/KyoriPowered/adventure).
 
 ## Setup
-AdventureConversations for Bukkit;
+Conversations for Bukkit:
 ```java
     @Override
     public void onEnable() {
@@ -16,7 +16,7 @@ AdventureConversations for Bukkit;
     }
 ```
 
-AdventureConversations for Fabric;
+Conversations for Fabric:
 ```java
     @Override
     public void onInitialize() {
