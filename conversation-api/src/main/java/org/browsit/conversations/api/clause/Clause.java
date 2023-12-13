@@ -1,4 +1,4 @@
-package me.illusion.conversations.api.clause;
+package org.browsit.conversations.api.clause;
 
 import net.kyori.adventure.text.Component;
 

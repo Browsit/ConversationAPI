@@ -1,6 +1,6 @@
-package me.illusion.conversations.api;
+package org.browsit.conversations.api;
 
-import me.illusion.conversations.api.util.Constants;
+import org.browsit.conversations.api.util.Constants;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package me.illusion.conversations.api;
+package org.browsit.conversations.api;
 
 import net.kyori.adventure.audience.Audience;
 

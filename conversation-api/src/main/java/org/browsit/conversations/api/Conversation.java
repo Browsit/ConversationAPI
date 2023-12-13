@@ -1,9 +1,9 @@
-package me.illusion.conversations.api;
+package org.browsit.conversations.api;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import me.illusion.conversations.api.clause.Clause;
-import me.illusion.conversations.api.util.StringValidator;
+import org.browsit.conversations.api.clause.Clause;
+import org.browsit.conversations.api.util.StringValidator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;

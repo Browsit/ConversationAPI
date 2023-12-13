@@ -1,6 +1,6 @@
-package me.illusion.conversations.bukkit;
+package org.browsit.conversations.bukkit;
 
-import me.illusion.conversations.api.Conversations;
+import org.browsit.conversations.api.Conversations;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 

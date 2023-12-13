@@ -1,4 +1,4 @@
-package me.illusion.conversations.api.util;
+package org.browsit.conversations.api.util;
 
 import java.util.regex.Pattern;
 
