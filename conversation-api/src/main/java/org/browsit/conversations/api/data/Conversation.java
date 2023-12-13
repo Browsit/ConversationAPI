@@ -1,4 +1,4 @@
-package org.browsit.conversations.api;
+package org.browsit.conversations.api.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.browsit.conversations.api.Conversations;
+import org.browsit.conversations.api.action.Prompt;
 import org.browsit.conversations.api.audience.AdventureConversationAudience;
 import org.browsit.conversations.api.audience.ConversationAudience;
 import org.browsit.conversations.api.clause.Clause;
@@ -39,7 +41,7 @@ public class Conversation {
      */
     public Conversation(UUID participant) {
         this.audience = Conversations.provider().player(participant);
-        this.wrappedAudience = new AdventureConversationAudience(audience);
+        this.wrappedAudience = new AdventureConversationAudience(this.audience);
     }
 
     /**
@@ -50,39 +52,49 @@ public class Conversation {
             Conversations.registerConversation(this);
         }
 
-        if (finished) {
+        if (this.finished) {
             throw new IllegalStateException("Can't run finished conversation multiple times");
         }
 
-        currentPrompt = nextPrompt();
-        if (currentPrompt != null) {
-            currentPrompt.display();
+        this.currentPrompt = this.nextPrompt();
+        if (this.currentPrompt != null) {
+            this.currentPrompt.display();
         }
+    }
+
+    private Prompt<?> nextPrompt() {
+        final int id = this.currentPrompt == null ? 0 : this.currentPrompt.getId();
+        for (final Prompt<?> prompt : this.prompts) {
+            if (prompt.getId() == id + 1) {
+                return prompt;
+            }
+        }
+        return null;
     }
 
     /**
      * Ticks the conversation, used for updating timers etc.
      */
-    protected void tick() {
+    public void tick() {
         if (!Conversations.isRegistered(this)) {
             return;
         }
-        if (finished) {
+        if (this.finished) {
             return;
         }
-        if (endClauses != null) {
-            for (Clause clause : endClauses) {
+        if (this.endClauses != null) {
+            for (final Clause clause : this.endClauses) {
                 if (clause instanceof Clause.Ticking) {
-                    Clause.Ticking tickingClause = (Clause.Ticking) clause;
+                    final Clause.Ticking tickingClause = (Clause.Ticking) clause;
                     tickingClause.tick();
                 }
 
                 if (clause.hasBeenTriggered()) {
                     if (clause.getTriggerMessage() != null) {
-                        audience.sendMessage(clause.getTriggerMessage());
+                        this.audience.sendMessage(clause.getTriggerMessage());
                     }
                     Conversations.endConversation(this);
-                    finished = true;
+                    this.finished = true;
                     return;
                 }
             }
@@ -93,13 +105,17 @@ public class Conversation {
      * Adds a {@link Prompt} to the conversation.
      */
     public Conversation prompt(Prompt<?> prompt) {
+        if (prompt == null) {
+            throw new IllegalArgumentException("Prompt can't be null");
+        }
+
         if (this.prompts == null) {
             this.prompts = new ArrayList<>();
         }
 
         prompt.setConversation(this);
-        prompt.setId(prompts.size() + 1);
-        prompts.add(prompt);
+        prompt.setId(this.prompts.size() + 1);
+        this.prompts.add(prompt);
         return this;
     }
 
@@ -107,7 +123,11 @@ public class Conversation {
      * Specifies a clause for when this conversation should end. There's no limit to the amount of clauses you can add.
      */
     public Conversation endWhen(Clause clause) {
-        if (endClauses == null) {
+        if (clause == null) {
+            throw new IllegalArgumentException("Clause can't be null");
+        }
+
+        if (this.endClauses == null) {
             this.endClauses = new ArrayList<>();
         }
         this.endClauses.add(clause);
@@ -120,6 +140,10 @@ public class Conversation {
      * @apiNote Can be null.
      */
     public Conversation finishingText(String text) {
+        if (text == null) {
+            throw new IllegalArgumentException("Text can't be null");
+        }
+
         this.onComplete = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
         return this;
     }
@@ -132,6 +156,10 @@ public class Conversation {
      * Result = Fish: Hello
      */
     public Conversation by(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name can't be null");
+        }
+
         this.by = LegacyComponentSerializer.legacyAmpersand().deserialize(name);
         return this;
     }
@@ -140,6 +168,10 @@ public class Conversation {
      * Sets what is and what isn't visible through chat during the conversation.
      */
     public Conversation chatVisbility(ChatVisibility visibility) {
+        if (visibility == null) {
+            throw new IllegalArgumentException("Visibility can't be null");
+        }
+
         this.chatVisibility = visibility;
         return this;
     }
@@ -153,12 +185,16 @@ public class Conversation {
     }
 
     public boolean inConversation(UUID uuid) {
-        Audience loneAudience = audience.filterAudience(input -> input.get(Identity.UUID).map(value -> value.equals(uuid)).orElse(false));
+        if (this.audience == null) {
+            return false;
+        }
+
+        final Audience loneAudience = this.audience.filterAudience(input -> input.get(Identity.UUID).map(value -> value.equals(uuid)).orElse(false));
         return loneAudience.pointers().get(Identity.UUID).isPresent();
     }
 
     public boolean isFinished() {
-        return finished;
+        return this.finished;
     }
 
     public void setFinished(boolean finished) {
@@ -166,65 +202,55 @@ public class Conversation {
     }
 
     public boolean echoOn() {
-        return echo;
+        return this.echo;
     }
 
     public ChatVisibility getChatVisibility() {
-        return chatVisibility;
+        return this.chatVisibility;
     }
 
     //** INTERNAL **//
-    protected @Nullable Component getBy() {
-        return by;
+    @Nullable
+    public Component getBy() {
+        return this.by;
     }
 
-    protected Audience getAudience() {
-        return audience;
+    public Audience getAudience() {
+        return this.audience;
     }
 
-    protected ConversationAudience getWrappedAudience() {
-        return wrappedAudience;
+    public ConversationAudience getWrappedAudience() {
+        return this.wrappedAudience;
     }
 
-    protected void handleInput(String input) {
-        String clean = StringValidator.clean(input);
+    public void handleInput(String input) {
+        final String clean = StringValidator.clean(input);
 
-        if (!currentPrompt.shouldHandle()) {
+        if (!this.currentPrompt.shouldHandle()) {
             Conversations.endConversation(this);
-            if (currentPrompt.getAttemptsOverText() != null) {
-                audience.sendMessage(currentPrompt.getAttemptsOverText());
+            if (this.currentPrompt.getAttemptsOverText() != null) {
+                this.audience.sendMessage(this.currentPrompt.getAttemptsOverText());
             }
             return;
         }
-        currentPrompt.handleInput(clean);
+        this.currentPrompt.handleInput(clean);
     }
 
-    protected void next() {
-        Prompt<?> next = nextPrompt();
+    public void next() {
+        final Prompt<?> next = this.nextPrompt();
         if (next == null) {
             Conversations.endConversation(this);
-            finished = true;
-            if (onComplete != null) {
-                if (by != null) {
-                    audience.sendMessage(by.append(Component.text(" ").append(onComplete)));
+            this.finished = true;
+            if (this.onComplete != null) {
+                if (this.by != null) {
+                    this.audience.sendMessage(this.by.append(Component.text(" ").append(this.onComplete)));
                 } else {
-                    audience.sendMessage(onComplete);
+                    this.audience.sendMessage(this.onComplete);
                 }
             }
             return;
         }
         this.currentPrompt = next;
         this.currentPrompt.display();
-    }
-
-
-    private Prompt<?> nextPrompt() {
-        int id = currentPrompt == null ? 0 : currentPrompt.getId();
-        for (Prompt<?> prompt : prompts) {
-            if (prompt.getId() == id + 1) {
-                return prompt;
-            }
-        }
-        return null;
     }
 }

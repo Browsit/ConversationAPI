@@ -1,8 +1,8 @@
 package org.browsit.conversations.bukkit;
 
-import org.browsit.conversations.api.ChatVisibility;
+import org.browsit.conversations.api.data.ChatVisibility;
 import org.browsit.conversations.api.Conversations;
-import org.browsit.conversations.api.ConversationsForwarder;
+import org.browsit.conversations.api.action.ConversationsForwarder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

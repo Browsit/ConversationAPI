@@ -19,17 +19,17 @@ public class TimeClause implements Clause.Ticking {
 
     @Override
     public void tick() {
-        current++;
+        this.current++;
     }
 
     @Override
     public boolean hasBeenTriggered() {
-        return current >= max;
+        return this.current >= this.max;
     }
 
     @Override
     @Nullable
     public Component getTriggerMessage() {
-        return triggerMessage;
+        return this.triggerMessage;
     }
 }

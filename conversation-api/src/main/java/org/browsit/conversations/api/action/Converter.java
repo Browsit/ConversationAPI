@@ -1,4 +1,4 @@
-package org.browsit.conversations.api;
+package org.browsit.conversations.api.action;
 
 /**
  * @author Illusion created on 2/9/2023

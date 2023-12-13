@@ -7,7 +7,11 @@
           <platformType>ADVENTURE</platformType>
           <platformType>SPIGOT</platformType>
         </autoDetectTypes>
+        <projectReimportVersion>1</projectReimportVersion>
       </configuration>
     </facet>
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="a88ce511-4bf1-40ad-b9b9-0ada950b8e1a" />
   </component>
 </module>

@@ -14,11 +14,11 @@ public class AdventureConversationAudience implements ConversationAudience {
 
     @Override
     public void sendMessage(String message) {
-        sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
+        this.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
     }
 
     @Override
     public void sendMessage(Component component) {
-        adventureAudience.sendMessage(component);
+        this.adventureAudience.sendMessage(component);
     }
 }

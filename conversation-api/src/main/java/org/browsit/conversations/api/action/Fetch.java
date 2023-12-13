@@ -1,4 +1,4 @@
-package org.browsit.conversations.api;
+package org.browsit.conversations.api.action;
 
 import org.browsit.conversations.api.audience.ConversationAudience;
 

@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.platform.AudienceProvider;
+import org.browsit.conversations.api.data.Conversation;
 
 /**
  * @author Illusion created on 2/9/2023
@@ -57,7 +58,7 @@ public final class Conversations {
         initialized = false;
     }
 
-    static void endConversation(Conversation conversation) {
+    public static void endConversation(Conversation conversation) {
         if (conversation == null) {
             throw new IllegalStateException("Conversations API not initialized");
         }
@@ -68,7 +69,11 @@ public final class Conversations {
         conversations.remove(conversation);
     }
 
-    static void registerConversation(Conversation conversation) {
+    public static boolean isRegistered(Conversation conversation) {
+        return conversations.contains(conversation);
+    }
+
+    public static void registerConversation(Conversation conversation) {
         if (conversation == null) {
             throw new IllegalStateException("Conversations API not initialized");
         }
@@ -78,16 +83,12 @@ public final class Conversations {
     }
 
     public static Optional<Conversation> getConversationOf(UUID playerId) {
-        for (Conversation conversation : conversations) {
+        for (final Conversation conversation : conversations) {
             if (conversation.inConversation(playerId)) {
                 return Optional.of(conversation);
             }
         }
         return Optional.empty();
-    }
-
-    public static boolean isRegistered(Conversation conversation) {
-        return conversations.contains(conversation);
     }
 
     public static AudienceProvider provider() {
