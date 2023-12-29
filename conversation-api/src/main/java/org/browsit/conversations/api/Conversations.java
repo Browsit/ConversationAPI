@@ -20,7 +20,7 @@ public final class Conversations {
     private static boolean initialized;
 
     /**
-     * Initalizes the Conversations API.
+     * Initializes the Conversations API.
      */
     public static void init(AudienceProvider provider) {
         if (initialized) {

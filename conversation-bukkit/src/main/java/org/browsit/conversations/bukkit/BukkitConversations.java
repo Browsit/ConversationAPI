@@ -15,11 +15,12 @@ public class BukkitConversations {
     private static boolean initialized;
 
     /**
-     * Initalizes the Conversations API.
+     * Initializes the Conversations API.
      */
     public static void init(JavaPlugin plugin) {
         if (initialized) throw new IllegalStateException("Conversations(Bukkit) API already initialized");
-        Conversations.init(BukkitAudiences.create(plugin));
+        BukkitAudiences ba = BukkitAudiences.create(plugin);
+        Conversations.init(ba);
         plugin.getServer().getPluginManager().registerEvents(new BukkitConversationsForwarder(), plugin);
         initialized = true;
     }
