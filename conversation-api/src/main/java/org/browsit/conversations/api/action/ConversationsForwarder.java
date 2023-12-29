@@ -1,14 +1,14 @@
-package org.browsit.conversations.api;
+package org.browsit.conversations.api.action;
 
 import java.util.UUID;
+import org.browsit.conversations.api.data.Conversation;
+import org.browsit.conversations.api.Conversations;
 
 
 /**
- * @author Illusion
- * created on 2/9/2023
+ * @author Illusion created on 2/9/2023
  * <p>
- * Dummy interface to forward input coming in from platform-dependent events to
- * {@link Conversations}.
+ * Dummy interface to forward input coming in from platform-dependent events to {@link Conversations}.
  */
 public interface ConversationsForwarder<A> {
 

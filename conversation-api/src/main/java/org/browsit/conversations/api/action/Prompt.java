@@ -1,15 +1,14 @@
-package org.browsit.conversations.api;
-
-import org.browsit.conversations.api.util.Constants;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.jetbrains.annotations.NotNull;
+package org.browsit.conversations.api.action;
 
 import java.util.function.Predicate;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.browsit.conversations.api.data.Conversation;
+import org.browsit.conversations.api.util.Constants;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * @author Illusion
- * created on 2/8/2023
+ * @author Illusion created on 2/8/2023
  */
 public class Prompt<A> {
 
@@ -32,8 +31,7 @@ public class Prompt<A> {
     }
 
     /**
-     * The handler/converter which takes the String input and converts it into
-     * the required type before passing it down to a {@link #filter(Predicate)})}.
+     * The handler/converter which takes the String input and converts it into the required type before passing it down to a {@link #filter(Predicate)})}.
      *
      * @apiNote Can't be null.
      */
@@ -43,8 +41,7 @@ public class Prompt<A> {
     }
 
     /**
-     * The filter allows you to take the converted input and validate it, before it
-     * will be passed down to {@link #fetch(Fetch)} (Fetch)}.
+     * The filter allows you to take the converted input and validate it, before it will be passed down to {@link #fetch(Fetch)} (Fetch)}.
      * <p>
      * e.g: Check if age > 18.
      *
@@ -56,9 +53,8 @@ public class Prompt<A> {
     }
 
     /**
-     * The last pass, here is where you actually define what you want
-     * to do with the given input. This happens after the input has been
-     * converted, and if necessary filtered.
+     * The last pass, here is where you actually define what you want to do with the given input. This happens after the input has been converted, and if
+     * necessary filtered.
      */
     public Prompt<A> fetch(Fetch<A> input) {
         this.inputHandler = input;
@@ -110,66 +106,66 @@ public class Prompt<A> {
     }
 
     // ** INTERAL METHODS **//
-    protected void display() {
-        if (conversation.getBy() != null) {
-            conversation.getAudience().sendMessage(conversation.getBy().append(Component.text(" ")).append(text));
+    public void display() {
+        if (this.conversation.getBy() != null) {
+            this.conversation.getAudience().sendMessage(this.conversation.getBy().append(Component.text(" ")).append(this.text));
             return;
         }
-        conversation.getAudience().sendMessage(text);
+        this.conversation.getAudience().sendMessage(this.text);
     }
 
-    protected void handleInput(String input) {
-        currentAttempt++;
+    public void handleInput(String input) {
+        this.currentAttempt++;
 
-        A converted;
+        final A converted;
         try {
-            converted = stringConverter.convert(input);
+            converted = this.stringConverter.convert(input);
         } catch (Exception e) {
-            conversation.getAudience().sendMessage(conversionFailedText);
+            this.conversation.getAudience().sendMessage(this.conversionFailedText);
             return;
         }
 
         if (converted == null) {
-            conversation.getAudience().sendMessage(conversionFailedText);
+            this.conversation.getAudience().sendMessage(this.conversionFailedText);
             return;
         }
 
-        if (inputFilter != null) {
-            if (inputFilter.test(converted)) {
-                inputHandler.execute(converted, conversation.getWrappedAudience());
-                complete = true;
-                conversation.next();
+        if (this.inputFilter != null) {
+            if (this.inputFilter.test(converted)) {
+                this.inputHandler.execute(converted, this.conversation.getWrappedAudience());
+                this.complete = true;
+                this.conversation.next();
                 return;
             }
-            conversation.getAudience().sendMessage(filterFailedText);
+            this.conversation.getAudience().sendMessage(this.filterFailedText);
             return;
         }
-        inputHandler.execute(converted, conversation.getWrappedAudience());
-        complete = true;
-        conversation.next();
+        this.inputHandler.execute(converted, this.conversation.getWrappedAudience());
+        this.complete = true;
+        this.conversation.next();
     }
 
-    protected boolean shouldHandle() {
-        return currentAttempt < attempts;
+    public boolean shouldHandle() {
+        return this.currentAttempt < this.attempts;
     }
 
-    protected Component getAttemptsOverText() {
-        return attemptsOverText;
+    public Component getAttemptsOverText() {
+        return this.attemptsOverText;
     }
 
     protected boolean isComplete() {
-        return complete;
+        return this.complete;
     }
 
-    protected int getId() {
-        return id;
+    public int getId() {
+        return this.id;
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    protected void setConversation(Conversation conversation) {
+    public void setConversation(Conversation conversation) {
         this.conversation = conversation;
     }
 }

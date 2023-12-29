@@ -1,8 +1,7 @@
-package org.browsit.conversations.api;
+package org.browsit.conversations.api.data;
 
 /**
- * @author Illusion
- * created on 2/11/2023
+ * @author Illusion created on 2/11/2023
  */
 public enum ChatVisibility {
 
@@ -14,5 +13,5 @@ public enum ChatVisibility {
     /**
      * Only plugin messages are visible.
      */
-    PLUGINS_ONLY;
+    PLUGINS_ONLY
 }
