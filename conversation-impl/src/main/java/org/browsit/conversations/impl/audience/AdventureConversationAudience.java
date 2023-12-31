@@ -1,8 +1,9 @@
-package org.browsit.conversations.api.audience;
+package org.browsit.conversations.impl.audience;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.browsit.conversations.api.audience.ConversationAudience;
 
 public class AdventureConversationAudience implements ConversationAudience {
 

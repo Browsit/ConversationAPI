@@ -8,7 +8,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
     <artifactId>conversation-bukkit</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -20,16 +23,6 @@
         </repository>
     </repositories>
     <dependencies>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.browsit</groupId>
-            <artifactId>conversation-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.browsit</groupId>
             <artifactId>conversation-impl</artifactId>
@@ -70,25 +63,17 @@
                         </goals>
                         <configuration>
                             <minimizeJar>false</minimizeJar>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>
 
                 <configuration>
                     <artifactSet>
-                        <includes>
-                            <include>net.*</include>
-                        </includes>
+                       <includes>
+                           <include>org.browsit:conversation-api</include>
+                           <include>org.browsit:conversation-impl</include>
+                       </includes>
                     </artifactSet>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.MF</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
                     <relocations>
                         <relocation>
                             <pattern>net.kyori.adventure</pattern>

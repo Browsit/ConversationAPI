@@ -9,7 +9,7 @@ import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.browsit.conversations.api.action.Prompt;
-import org.browsit.conversations.api.audience.AdventureConversationAudience;
+import org.browsit.conversations.impl.audience.AdventureConversationAudience;
 import org.browsit.conversations.api.audience.ConversationAudience;
 import org.browsit.conversations.api.clause.Clause;
 import org.browsit.conversations.api.data.ChatVisibility;

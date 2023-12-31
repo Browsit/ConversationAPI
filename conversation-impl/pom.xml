@@ -11,6 +11,7 @@
 
   <groupId>org.browsit</groupId>
   <artifactId>conversation-impl</artifactId>
+  <version>1.0-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -24,9 +25,70 @@
       <version>4.3.0</version>
     </dependency>
     <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>adventure-api</artifactId>
+      <version>4.13.0</version>
+    </dependency>
+    <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>adventure-platform-api</artifactId>
+      <version>4.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>adventure-text-serializer-legacy</artifactId>
+      <version>4.13.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.browsit</groupId>
       <artifactId>conversation-api</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <defaultGoal>clean package install</defaultGoal>
+    <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+
+    <resources>
+      <resource>
+        <targetPath>.</targetPath>
+        <directory>${basedir}/</directory>
+        <filtering>false</filtering>
+        <includes>
+          <include>README.md</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                    <excluse>org/jetbrains/**</excluse>
+                  </excludes>
+                </filter>
+              </filters>
+              <minimizeJar>false</minimizeJar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
