@@ -87,11 +87,11 @@
                     <relocations>
                         <relocation>
                             <pattern>net.kyori.adventure</pattern>
-                            <shadedPattern>org.browsit.libs.adventure</shadedPattern>
+                            <shadedPattern>org.browsit.libs.kyori.adventure</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori.examination</pattern>
-                            <shadedPattern>org.browsit.libs.examination</shadedPattern>
+                            <shadedPattern>org.browsit.libs.kyori.examination</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
