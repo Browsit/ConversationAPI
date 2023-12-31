@@ -2,7 +2,6 @@ package org.browsit.conversations.api.provider;
 
 import java.util.Optional;
 import java.util.UUID;
-import org.browsit.conversations.api.action.Prompt;
 import org.browsit.conversations.api.data.Conversation;
 
 public interface ConversationsProvider {
@@ -11,5 +10,4 @@ public interface ConversationsProvider {
 
     Conversation createConversation(UUID userId);
     Optional<Conversation> getConversationOf(UUID userId);
-    <A> Prompt<A> createPrompt(String name);
 }

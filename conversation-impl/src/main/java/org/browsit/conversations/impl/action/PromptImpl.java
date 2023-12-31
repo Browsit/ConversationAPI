@@ -7,7 +7,6 @@ import org.browsit.conversations.api.action.Converter;
 import org.browsit.conversations.api.action.Fetch;
 import org.browsit.conversations.api.action.Prompt;
 import org.browsit.conversations.api.audience.ConversationAudience;
-import org.browsit.conversations.api.data.Conversation;
 import org.browsit.conversations.api.util.Constants;
 import org.browsit.conversations.impl.data.ConversationImpl;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PromptImpl<A> implements Prompt<A> {
 
+    private final ConversationImpl conversation;
     private final Component text;
     private int id;
 
@@ -24,15 +24,15 @@ public class PromptImpl<A> implements Prompt<A> {
     private int currentAttempt;
     private boolean complete;
 
-    private ConversationImpl conversation;
     private Fetch<A> inputHandler;
     private Predicate<A> inputFilter;
     private Converter<A> stringConverter;
     private Component conversionFailedText, filterFailedText = Constants.INVALID_INPUT_MESSAGE;
     private Component attemptsOverText;
 
-    public PromptImpl(String text) {
+    public PromptImpl(String text, ConversationImpl impl) {
         this.text = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
+        this.conversation = impl;
     }
 
     /**
@@ -135,7 +135,7 @@ public class PromptImpl<A> implements Prompt<A> {
         final A converted;
         try {
             converted = this.stringConverter.convert(input);
-        } catch (Exception e) {
+        } catch (Exception expected) {
             audience.sendMessage(this.conversionFailedText);
             return;
         }
@@ -152,7 +152,7 @@ public class PromptImpl<A> implements Prompt<A> {
                 this.conversation.next();
                 return;
             }
-            this.conversation.getAudience().sendMessage(this.filterFailedText);
+            audience.sendMessage(this.filterFailedText);
             return;
         }
         this.inputHandler.execute(converted, audience);
@@ -178,9 +178,5 @@ public class PromptImpl<A> implements Prompt<A> {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setConversation(ConversationImpl conversation) {
-        this.conversation = conversation;
     }
 }

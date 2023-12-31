@@ -6,10 +6,6 @@ import org.browsit.conversations.api.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
 public interface Prompt<A> {
-    
-    static <A> Prompt<A> createPrompt(String name) {
-        return Conversations.createPrompt(name);
-    }
 
     /**
      * The handler/converter which takes the String input and converts it into the required type before passing it down to a {@link #filter(Predicate)})}.

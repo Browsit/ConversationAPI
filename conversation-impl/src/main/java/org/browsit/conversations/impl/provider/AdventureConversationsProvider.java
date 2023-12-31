@@ -65,12 +65,6 @@ public class AdventureConversationsProvider implements ConversationsProvider {
             .map(conversation -> conversation);
     }
 
-    @Override
-    public <A> Prompt<A> createPrompt(String name) {
-        return new PromptImpl<>(name);
-    }
-
-
     public void endInternal(ConversationImpl conversation) {
         this.conversations.remove(conversation);
     }

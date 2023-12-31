@@ -3,6 +3,7 @@ package org.browsit.conversations.impl.data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
@@ -105,7 +106,7 @@ public class ConversationImpl implements Conversation {
      * Adds a {@link Prompt} to the conversation.
      */
     @Override
-    public Conversation prompt(Prompt<?> prompt) {
+    public <T> Conversation prompt(String name, Class<T> type, Consumer<Prompt<T>> prompt) {
         if (prompt == null) {
             throw new IllegalArgumentException("Prompt can't be null");
         }
@@ -116,8 +117,7 @@ public class ConversationImpl implements Conversation {
 
         // Ideally we'd make Prompt a data object or toss its logic here, so that
         // classes that implement Prompt don't have to inherit from PromptImpl.
-        PromptImpl<?> impl = (PromptImpl<?>) prompt;
-        impl.setConversation(this);
+        PromptImpl<T> impl = new PromptImpl<>(name, this);
         impl.setId(this.prompts.size() + 1);
         this.prompts.add(impl);
         return this;

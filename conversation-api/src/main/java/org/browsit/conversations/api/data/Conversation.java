@@ -1,13 +1,14 @@
 package org.browsit.conversations.api.data;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 import org.browsit.conversations.api.action.Prompt;
 import org.browsit.conversations.api.audience.ConversationAudience;
 import org.browsit.conversations.api.clause.Clause;
 
 public interface Conversation {
 
-    Conversation prompt(Prompt<?> prompt);
+    <T> Conversation prompt(String name, Class<T> type, Consumer<Prompt<T>> prompt);
     Conversation endWhen(Clause clause);
     Conversation echo(boolean echo);
     Conversation chatVisibility(ChatVisibility chatVisibility);
