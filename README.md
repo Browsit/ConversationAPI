@@ -6,7 +6,7 @@ Conversations for Bukkit:
 ```java
     @Override
     public void onEnable() {
-        Conversations.init(BukkitAudiences.create(this));
+        Conversations.init(AdventureConversationsProvider.create(BukkitAudiences.create(this)));
         new BukkitConversationsForwarder().register(this);
     }
     
@@ -21,7 +21,7 @@ Conversations for Fabric:
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-            Conversations.init(FabricServerAudiences.of(server));
+            Conversations.init(AdventureConversationsProvider.create(FabricServerAudiences.of(server)));
             new FabricConversationsFowarder().register(server);
         });
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
@@ -33,25 +33,26 @@ Conversations for Fabric:
 ## Using the API
 Creating a new Conversation:
 ```java
-new Conversation(player.getUniqueId())
-        .run();
+Conversations.create(player.getUniqueId())
+        .start();
 ```
 Under the hood, conversations are entirely managed - this means that you do not have to worry about registering, ending, or managing audiences. However, `run()` has to be called to make the conversation execute.
 
 ### Prompts
 You can use Prompts to create interactive conversations and fetch user input. The way you manage this user input is entirely in your own control using Converters, Filters and finally a Fetch.
 ```java
-new Conversation(player.getUniqueId())
-        .prompt(new Prompt<Integer>("What's 2+2?")
-        .attempts(3)
-        .allAttemptsFailedText("You have ran out of attempts :(")
-        .converter(Integer::parseInt)
-        .conversionFailText("Only rounded numbers are accepted!")
-        .filter(integer -> integer == 4)
-        .filterFailText("Your answer was wrong!")
-        .fetch((input, sender) -> sender.sendMessage("Correct! The answer was: " + input)))
+Conversations.create(player.getUniqueId())
+        .prompt("What's 2+2?", Integer.class, prompt -> prompt
+            .attempts(3)
+            .allAttemptsFailedText("You have ran out of attempts :(")
+            .converter(Integer::parseInt)
+            .conversionFailText("Only rounded numbers are accepted!")
+            .filter(integer -> integer == 4)
+            .filterFailText("Your answer was wrong!")
+            .fetch((input, sender) -> sender.sendMessage("Correct! The answer was: " + input))
+         )
         .endWhen(new TimeClause(10000L, "Out of time (10 seconds)!"))
-        .run();
+        .start();
 ```          
 In this example, the audience is asked to solve the question in our prompt, for which they are given 3 attempts. First, we Convert the user input to an Integer, after that we use a Filter to check whether the given answer is correct or not, and finally we use a Fetch to actually retrieve the input.
 

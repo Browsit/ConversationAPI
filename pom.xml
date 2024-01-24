@@ -12,6 +12,7 @@
     <modules>
         <module>conversation-api</module>
         <module>conversation-bukkit</module>
+      <module>conversation-impl</module>
     </modules>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

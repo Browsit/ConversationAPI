@@ -1,7 +1,7 @@
 package org.browsit.conversations.bukkit;
 
-import org.browsit.conversations.api.data.ChatVisibility;
 import org.browsit.conversations.api.Conversations;
+import org.browsit.conversations.api.data.ChatVisibility;
 import org.browsit.conversations.api.action.ConversationsForwarder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,9 +27,9 @@ public class BukkitConversationsForwarder implements ConversationsForwarder<Java
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         // Check whether any recipients are in a conversation which can't receive chat messages
-        Iterator<Player> recipients = event.getRecipients().iterator();
+        final Iterator<Player> recipients = event.getRecipients().iterator();
         while (recipients.hasNext()) {
-            Player recipient = recipients.next();
+            final Player recipient = recipients.next();
             Conversations.getConversationOf(recipient.getUniqueId()).ifPresent(conversation -> {
                 if (conversation.getChatVisibility() != ChatVisibility.ALL) {
                     recipients.remove();
@@ -38,14 +38,14 @@ public class BukkitConversationsForwarder implements ConversationsForwarder<Java
         }
 
         // Now we check if the message sender is in a conversation, if so we forward the input
-        Player chatter = event.getPlayer();
+        final Player chatter = event.getPlayer();
 
         Conversations.getConversationOf(chatter.getUniqueId()).ifPresent(conversation -> {
             if (conversation.echoOn()) {
                 chatter.sendMessage(event.getMessage());
             }
 
-            forwardInput(conversation, chatter.getUniqueId(), event.getMessage(), () -> {
+            this.forwardInput(conversation, chatter.getUniqueId(), event.getMessage(), () -> {
                 event.setCancelled(true);
             });
         });
