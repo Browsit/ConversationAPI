@@ -6,13 +6,12 @@ Conversations for Bukkit:
 ```java
     @Override
     public void onEnable() {
-        Conversations.init(AdventureConversationsProvider.create(BukkitAudiences.create(this)));
-        new BukkitConversationsForwarder().register(this);
+        BukkitConversations.init(this);
     }
     
     @Override
     public void onDisable() {
-        Conversations.cleanUp();
+        BukkitConversations.cleanUp();
     }
 ```
 
