@@ -9,10 +9,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.AudienceProvider;
-import org.browsit.conversations.api.action.Prompt;
 import org.browsit.conversations.api.data.Conversation;
 import org.browsit.conversations.api.provider.ConversationsProvider;
-import org.browsit.conversations.impl.action.PromptImpl;
 import org.browsit.conversations.impl.data.ConversationImpl;
 
 public class AdventureConversationsProvider implements ConversationsProvider {
