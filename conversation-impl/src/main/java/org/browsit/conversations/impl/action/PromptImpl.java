@@ -137,11 +137,13 @@ public class PromptImpl<A> implements Prompt<A> {
         try {
             converted = this.stringConverter.convert(input);
         } catch (Exception expected) {
+            System.out.println("Failed to convert input due to " + expected.getMessage());
             audience.sendMessage(this.conversionFailedText);
             return;
         }
 
         if (converted == null) {
+            System.out.println("There's no converted input.");
             audience.sendMessage(this.conversionFailedText);
             return;
         }

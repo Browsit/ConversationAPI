@@ -27,7 +27,7 @@ public class AdventureConversationAudience implements ConversationAudience {
         if (component == null) {
             return;
         }
-        
+
         this.adventureAudience.sendMessage(component);
     }
 }
