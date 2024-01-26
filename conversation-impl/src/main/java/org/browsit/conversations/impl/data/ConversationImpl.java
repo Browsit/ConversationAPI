@@ -118,6 +118,7 @@ public class ConversationImpl implements Conversation {
         // Ideally we'd make Prompt a data object or toss its logic here, so that
         // classes that implement Prompt don't have to inherit from PromptImpl.
         PromptImpl<T> impl = new PromptImpl<>(name, this);
+        prompt.accept(impl);
         impl.setId(this.prompts.size() + 1);
         this.prompts.add(impl);
         return this;
