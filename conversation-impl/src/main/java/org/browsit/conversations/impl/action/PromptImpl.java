@@ -27,9 +27,9 @@ public class PromptImpl<A> implements Prompt<A> {
     private Fetch<A> inputHandler;
     private Predicate<A> inputFilter;
     private Converter<A> stringConverter;
-    private Component conversionFailedText;
+    private Component conversionFailedText = Component.text("Conversion failed.");
     private Component filterFailedText = /*Constants.INVALID_INPUT_MESSAGE*/ Component.text("Invalid input.");
-    private Component attemptsOverText;
+    private Component attemptsOverText = Component.text("You've run out of attempts.");
 
     public PromptImpl(String text, ConversationImpl impl) {
         this.text = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
