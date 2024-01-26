@@ -27,7 +27,8 @@ public class PromptImpl<A> implements Prompt<A> {
     private Fetch<A> inputHandler;
     private Predicate<A> inputFilter;
     private Converter<A> stringConverter;
-    private Component conversionFailedText, filterFailedText = Constants.INVALID_INPUT_MESSAGE;
+    private Component conversionFailedText;
+    private Component filterFailedText = /*Constants.INVALID_INPUT_MESSAGE*/ Component.text("Invalid input.");
     private Component attemptsOverText;
 
     public PromptImpl(String text, ConversationImpl impl) {
@@ -130,7 +131,7 @@ public class PromptImpl<A> implements Prompt<A> {
     public void handleInput(String input) {
         this.currentAttempt++;
 
-        ConversationAudience audience = this.conversation.getAudience();
+        final ConversationAudience audience = this.conversation.getAudience();
 
         final A converted;
         try {
