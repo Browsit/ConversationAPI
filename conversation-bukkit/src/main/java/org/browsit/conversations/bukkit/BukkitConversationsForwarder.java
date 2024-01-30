@@ -45,7 +45,7 @@ public class BukkitConversationsForwarder implements ConversationsForwarder<Java
                 chatter.sendMessage(event.getMessage());
             }
 
-            this.forwardInput(conversation, chatter.getUniqueId(), event.getMessage(), () -> {
+            this.forwardInput(conversation, event.getMessage(), () -> {
                 event.setCancelled(true);
             });
         });

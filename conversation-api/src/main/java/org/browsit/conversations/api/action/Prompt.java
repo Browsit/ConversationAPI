@@ -1,7 +1,6 @@
 package org.browsit.conversations.api.action;
 
 import java.util.function.Predicate;
-import org.browsit.conversations.api.Conversations;
 import org.browsit.conversations.api.util.Constants;
 import org.jetbrains.annotations.NotNull;
 

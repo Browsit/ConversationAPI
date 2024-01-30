@@ -24,7 +24,7 @@ public class BukkitConversations {
         BukkitAudiences ba = BukkitAudiences.create(plugin);
         ConversationsProvider provider = AdventureConversationsProvider.create(ba);
         Conversations.init(provider);
-        plugin.getServer().getPluginManager().registerEvents(new BukkitConversationsForwarder(), plugin);
+        new BukkitConversationsForwarder().register(plugin);
         initialized = true;
     }
 

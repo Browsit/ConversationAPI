@@ -23,7 +23,7 @@ public interface ConversationsForwarder<A> {
      *
      * @param onSuccess Runnable that executes when the input was forwarded succesfully.
      */
-    default void forwardInput(Conversation conversation, UUID sender, String input, Runnable onSuccess) {
+    default void forwardInput(Conversation conversation, String input, Runnable onSuccess) {
         conversation.handleInput(input);
         onSuccess.run();
     }

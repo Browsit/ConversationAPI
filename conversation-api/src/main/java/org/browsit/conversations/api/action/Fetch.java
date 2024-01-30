@@ -7,5 +7,10 @@ import org.browsit.conversations.api.audience.ConversationAudience;
  */
 public interface Fetch<A> {
 
+    /**
+     * Runs an action with the converted input.
+     * @param input converted input
+     * @param sender sender of the input
+     */
     void execute(A input, ConversationAudience sender);
 }
