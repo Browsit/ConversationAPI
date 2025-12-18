@@ -42,14 +42,13 @@ You can use Prompts to create interactive conversations and fetch user input. Th
 ```java
 Conversations.create(player.getUniqueId())
         .prompt("What's 2+2?", Integer.class, prompt -> prompt
-            .attempts(3)
-            .allAttemptsFailedText("You have ran out of attempts :(")
-            .converter(Integer::parseInt)
-            .conversionFailText("Only rounded numbers are accepted!")
-            .filter(integer -> integer == 4)
-            .filterFailText("Your answer was wrong!")
-            .fetch((input, sender) -> sender.sendMessage("Correct! The answer was: " + input))
-         )
+        .attempts(3)
+        .allAttemptsFailedText("You have ran out of attempts :(")
+        .converter(Integer::parseInt)
+        .conversionFailText("Only rounded numbers are accepted!")
+        .filter(integer -> integer == 4)
+        .filterFailText("Your answer was wrong!")
+        .fetch((input, sender) -> sender.sendMessage("Correct! The answer was: " + input)))
         .endWhen(new TimeClause(10000L, "Out of time (10 seconds)!"))
         .start();
 ```          
