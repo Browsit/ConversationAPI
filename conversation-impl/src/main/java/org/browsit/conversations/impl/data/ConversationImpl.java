@@ -62,6 +62,7 @@ public class ConversationImpl implements Conversation {
             throw new IllegalStateException("Can't run finished conversation multiple times");
         }
 
+        // FIXME: There's no guarantee that getConversationOf will return the right conversation. It just finds the first one that matches this audience
         final Optional<Conversation> existing = this.audience.get(Identity.UUID).flatMap(this.provider::getConversationOf);
 
         existing.ifPresent(conversation -> {
@@ -205,6 +206,9 @@ public class ConversationImpl implements Conversation {
         if (this.audience == null) {
             return false;
         }
+        if (this.currentPrompt == null) {
+            return false; // Not started yet
+        }
 
         final Audience loneAudience = this.audience.filterAudience(input -> input.get(Identity.UUID).map(value -> value.equals(uuid)).orElse(false));
         return loneAudience.pointers().get(Identity.UUID).isPresent();
@@ -238,19 +242,17 @@ public class ConversationImpl implements Conversation {
         final String clean = StringValidator.clean(input);
 
         if (!this.currentPrompt.shouldHandle()) {
-            provider.endInternal(this);
+            this.provider.endInternal(this);
             if (this.currentPrompt.getAttemptsOverText() != null) {
                 this.audience.sendMessage(this.currentPrompt.getAttemptsOverText());
             }
             return;
         }
 
-        System.out.println("Handling input: " + clean);
         this.currentPrompt.handleInput(clean);
     }
 
     public void next() {
-        System.out.println("Next prompt");
         final PromptImpl<?> next = this.nextPrompt();
         if (next == null) {
             this.finish();
