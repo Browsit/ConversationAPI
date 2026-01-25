@@ -2,6 +2,7 @@ package org.browsit.conversations.impl.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import net.kyori.adventure.audience.Audience;
@@ -60,6 +61,14 @@ public class ConversationImpl implements Conversation {
         if (this.finished) {
             throw new IllegalStateException("Can't run finished conversation multiple times");
         }
+
+        final Optional<Conversation> existing = this.audience.get(Identity.UUID).flatMap(this.provider::getConversationOf);
+
+        existing.ifPresent(conversation -> {
+            if (conversation != this) {
+                conversation.finish();
+            }
+        });
 
         this.currentPrompt = this.nextPrompt();
         if (this.currentPrompt != null) {
@@ -235,10 +244,13 @@ public class ConversationImpl implements Conversation {
             }
             return;
         }
+
+        System.out.println("Handling input: " + clean);
         this.currentPrompt.handleInput(clean);
     }
 
     public void next() {
+        System.out.println("Next prompt");
         final PromptImpl<?> next = this.nextPrompt();
         if (next == null) {
             this.finish();
