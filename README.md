@@ -49,7 +49,7 @@ Conversations.create(player.getUniqueId())
         .filter(integer -> integer == 4)
         .filterFailText("Your answer was wrong!")
         .fetch((input, sender) -> sender.sendMessage("Correct! The answer was: " + input)))
-        .endWhen(new TimeClause(10000L, "Out of time (10 seconds)!"))
+        .endWhen(TimeClause.create(10000L, "Out of time (10 seconds)!"))
         .start();
 ```          
 In this example, the audience is asked to solve the question in our prompt, for which they are given 3 attempts. First, we Convert the user input to an Integer, after that we use a Filter to check whether the given answer is correct or not, and finally we use a Fetch to actually retrieve the input.
