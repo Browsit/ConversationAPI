@@ -1,20 +1,27 @@
 package org.browsit.conversations.api.clause;
 
 import net.kyori.adventure.text.Component;
+import org.browsit.conversations.api.audience.ConversationAudience;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Illusion created on 2/9/2023
  */
-public class TimeClause implements Clause.Ticking {
+public abstract class TimeClause implements Clause.Ticking {
 
-    private final Component triggerMessage;
     private final long max;
     private long current;
 
-    public TimeClause(long millis, @Nullable Component clauseTriggerMsg) {
+    private TimeClause(long millis) {
         this.max = millis;
-        this.triggerMessage = clauseTriggerMsg;
+    }
+
+    public static Clause.Ticking create(long millis, @Nullable Component clauseTriggerMsg) {
+        return new ComponentTimeClause(millis, clauseTriggerMsg);
+    }
+
+    public static Clause.Ticking create(long millis, @Nullable String clauseTriggerMsg) {
+        return new StringTimeClause(millis, clauseTriggerMsg);
     }
 
     @Override
@@ -27,9 +34,32 @@ public class TimeClause implements Clause.Ticking {
         return this.current >= this.max;
     }
 
-    @Override
-    @Nullable
-    public Component getTriggerMessage() {
-        return this.triggerMessage;
+    private static class StringTimeClause extends TimeClause {
+
+        private final String triggerMessage;
+
+        private StringTimeClause(long millis, String triggerMessage) {
+            super(millis);
+            this.triggerMessage = triggerMessage;
+        }
+
+        @Override
+        public void trigger(ConversationAudience audience) {
+            audience.sendMessage(this.triggerMessage);
+        }
+    }
+
+    private static class ComponentTimeClause extends TimeClause {
+        private final Component triggerMessage;
+
+        private ComponentTimeClause(long millis, Component triggerMessage) {
+            super(millis);
+            this.triggerMessage = triggerMessage;
+        }
+
+        @Override
+        public void trigger(ConversationAudience audience) {
+            audience.sendMessage(this.triggerMessage);
+        }
     }
 }

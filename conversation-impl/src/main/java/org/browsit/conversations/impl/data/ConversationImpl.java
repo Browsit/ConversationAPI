@@ -102,9 +102,7 @@ public class ConversationImpl implements Conversation {
                 }
 
                 if (clause.hasBeenTriggered()) {
-                    if (clause.getTriggerMessage() != null) {
-                        this.audience.sendMessage(clause.getTriggerMessage());
-                    }
+                    clause.trigger(this.wrappedAudience); // Bit backwards. Potentially rework this into a list of ClauseActions?
                     this.finish();
                     return;
                 }

@@ -1,6 +1,7 @@
 package org.browsit.conversations.api.clause;
 
 import net.kyori.adventure.text.Component;
+import org.browsit.conversations.api.audience.ConversationAudience;
 
 /**
  * @author Illusion created on 2/8/2023
@@ -13,9 +14,9 @@ public interface Clause {
     boolean hasBeenTriggered();
 
     /**
-     * Returns the message that gets displayed when this clause is triggered.
+     * Runs the trigger action.
      */
-    Component getTriggerMessage();
+    void trigger(ConversationAudience audience);
 
     interface Ticking extends Clause {
 
