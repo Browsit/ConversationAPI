@@ -137,4 +137,11 @@ public interface Conversation {
      * @return The text of the prompt.
      */
     String getCurrentPromptText();
+
+    /**
+     * Gets the current title of this conversation.
+     *
+     * @return The title of the prompt.
+     */
+    String getTitle();
 }

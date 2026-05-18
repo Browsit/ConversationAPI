@@ -230,7 +230,7 @@ public class ConversationImpl implements Conversation {
         return currentPrompt.getText();
     }
 
-    public String getCurrentPromptTitle() {
+    public String getTitle() {
         return currentPrompt.getTitle();
     }
 
@@ -287,11 +287,6 @@ public class ConversationImpl implements Conversation {
         }
         this.currentPrompt = next;
         this.currentPrompt.display();
-    }
-
-    @SuppressWarnings("unused")
-    public @Nullable Component getTitle() {
-        return this.prefix;
     }
 
     public @Nullable Component getPrefix() {
