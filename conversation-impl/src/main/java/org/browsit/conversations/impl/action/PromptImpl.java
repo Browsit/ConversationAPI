@@ -186,6 +186,10 @@ public class PromptImpl<A> implements Prompt<A> {
         return LegacyComponentSerializer.legacyAmpersand().serialize(title);
     }
 
+    public void setTitle(Component title) {
+        this.title = title;
+    }
+
     public String getText() {
         return LegacyComponentSerializer.legacyAmpersand().serialize(text);
     }
