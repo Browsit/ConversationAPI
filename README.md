@@ -60,7 +60,7 @@ Clauses are used to define when a conversation should end. Conversation API only
 Conversation API comes with some other options that you can use, below is a list of them and what they do.
 | Name | Functionality |
 |------|---------------|
-| .by(...) | Sets a name that gets prepended to each line of the conversation. |
+| .prefix(...) | Sets a text which gets prepended to each line of the conversation. |
 | .echo(boolean) | Sets whether the user input should be echo'd in chat or not |
 | .chatVisibility(...) | Used to set which messages the conversation's audience can receive, e.g use to disable chat |
 | .finishingText(...) | Sets a text to be displayed after the conversation has ended |

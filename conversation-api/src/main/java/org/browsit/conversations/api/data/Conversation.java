@@ -54,7 +54,7 @@ public interface Conversation {
      * @param name The name.
      * @return The conversation.
      */
-    Conversation by(String name);
+    Conversation prefix(String name);
 
     /**
      * The text that gets displayed when the conversation is finished/complete.
@@ -123,4 +123,10 @@ public interface Conversation {
      */
     ConversationAudience getAudience();
 
+    /**
+     * Gets the current prompt name in this conversation.
+     *
+     * @return The text name of the prompt.
+     */
+    String getCurrentPromptName();
 }

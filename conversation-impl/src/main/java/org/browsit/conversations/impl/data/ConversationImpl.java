@@ -33,7 +33,7 @@ public class ConversationImpl implements Conversation {
     private boolean finished, echo;
 
     @Nullable
-    private Component by, onComplete;
+    private Component prefix, onComplete;
 
     @Nullable
     private List<Clause> endClauses;
@@ -171,12 +171,12 @@ public class ConversationImpl implements Conversation {
      * Result = Fish: Hello
      */
     @Override
-    public Conversation by(String name) {
+    public Conversation prefix(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name can't be null");
         }
 
-        this.by = LegacyComponentSerializer.legacyAmpersand().deserialize(name);
+        this.prefix = LegacyComponentSerializer.legacyAmpersand().deserialize(name);
         return this;
     }
 
@@ -210,6 +210,10 @@ public class ConversationImpl implements Conversation {
 
         final Audience loneAudience = this.audience.filterAudience(input -> input.get(Identity.UUID).map(value -> value.equals(uuid)).orElse(false));
         return loneAudience.pointers().get(Identity.UUID).isPresent();
+    }
+
+    public String getCurrentPromptName() {
+        return currentPrompt.getName();
     }
 
     public boolean isFinished() {
@@ -255,8 +259,8 @@ public class ConversationImpl implements Conversation {
         if (next == null) {
             this.finish();
             if (this.onComplete != null) {
-                if (this.by != null) {
-                    this.audience.sendMessage(this.by.append(Component.text(" ").append(this.onComplete)));
+                if (this.prefix != null) {
+                    this.audience.sendMessage(this.prefix.append(Component.text(" ").append(this.onComplete)));
                 } else {
                     this.audience.sendMessage(this.onComplete);
                 }
@@ -267,7 +271,7 @@ public class ConversationImpl implements Conversation {
         this.currentPrompt.display();
     }
 
-    public Component getBy() {
-        return this.by;
+    public @Nullable Component getPrefix() {
+        return this.prefix;
     }
 }

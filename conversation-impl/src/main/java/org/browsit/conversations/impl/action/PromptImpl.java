@@ -121,8 +121,8 @@ public class PromptImpl<A> implements Prompt<A> {
     // ** INTERAL METHODS **//
 
     public void display() {
-        if (this.conversation.getBy() != null) {
-            this.conversation.getAudience().sendMessage(this.conversation.getBy().append(Component.text(" ")).append(this.text));
+        if (this.conversation.getPrefix() != null) {
+            this.conversation.getAudience().sendMessage(this.conversation.getPrefix().append(Component.text(" ")).append(this.text));
             return;
         }
         this.conversation.getAudience().sendMessage(this.text);
@@ -179,5 +179,9 @@ public class PromptImpl<A> implements Prompt<A> {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return LegacyComponentSerializer.legacyAmpersand().serialize(text);
     }
 }
