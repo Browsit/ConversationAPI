@@ -33,7 +33,7 @@ public class ConversationImpl implements Conversation {
     private boolean finished, echo;
 
     @Nullable
-    private Component prefix, onComplete;
+    private Component prefix, title, onComplete;
 
     @Nullable
     private List<Clause> endClauses;
@@ -63,6 +63,7 @@ public class ConversationImpl implements Conversation {
         }
 
         // FIXME: There's no guarantee that getConversationOf will return the right conversation. It just finds the first one that matches this audience
+        // 2026-05: Added temporary solution via #title - developers should compare as needed
         final Optional<Conversation> existing = this.audience.get(Identity.UUID).flatMap(this.provider::getConversationOf);
 
         existing.ifPresent(conversation -> {
@@ -133,6 +134,19 @@ public class ConversationImpl implements Conversation {
     }
 
     /**
+     * Text which may be used to later identify this conversation
+     */
+    @Override
+    public Conversation title(String text) {
+        if (text == null) {
+            throw new IllegalArgumentException("Text can't be null");
+        }
+
+        this.title = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
+        return this;
+    }
+
+    /**
      * Specifies a clause for when this conversation should end. There's no limit to the amount of clauses you can add.
      */
     @Override
@@ -164,19 +178,19 @@ public class ConversationImpl implements Conversation {
     }
 
     /**
-     * A name that gets prepended to each line of this conversation.
+     * Text which gets prepended to each line of this conversation.
      * <p>
-     * example; name = Fish: prompt = Hello
+     * example; text = Fish: prompt = Hello, I am a fish
      * <p>
-     * Result = Fish: Hello
+     * Result = Fish: Hello, I am a fish
      */
     @Override
-    public Conversation prefix(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name can't be null");
+    public Conversation prefix(String text) {
+        if (text == null) {
+            throw new IllegalArgumentException("Text can't be null");
         }
 
-        this.prefix = LegacyComponentSerializer.legacyAmpersand().deserialize(name);
+        this.prefix = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
         return this;
     }
 
@@ -212,8 +226,12 @@ public class ConversationImpl implements Conversation {
         return loneAudience.pointers().get(Identity.UUID).isPresent();
     }
 
-    public String getCurrentPromptName() {
-        return currentPrompt.getName();
+    public String getCurrentPromptText() {
+        return currentPrompt.getText();
+    }
+
+    public String getCurrentPromptTitle() {
+        return currentPrompt.getTitle();
     }
 
     public boolean isFinished() {
@@ -269,6 +287,11 @@ public class ConversationImpl implements Conversation {
         }
         this.currentPrompt = next;
         this.currentPrompt.display();
+    }
+
+    @SuppressWarnings("unused")
+    public @Nullable Component getTitle() {
+        return this.prefix;
     }
 
     public @Nullable Component getPrefix() {

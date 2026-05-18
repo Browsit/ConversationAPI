@@ -11,13 +11,21 @@ public interface Conversation {
     /**
      * Adds a {@link Prompt} to the conversation.
      *
-     * @param name   The name of the prompt.
+     * @param text   The text of the prompt.
      * @param type   The complex type class of the prompt.
      * @param prompt An action that gets executed when the prompt is created.
      * @param <T>    The complex type of the prompt.
      * @return The conversation.
      */
-    <T> Conversation prompt(String name, Class<T> type, Consumer<Prompt<T>> prompt);
+    <T> Conversation prompt(String text, Class<T> type, Consumer<Prompt<T>> prompt);
+
+    /**
+     * Text which may be used to later identify this conversation
+     *
+     * @param text The text.
+     * @return The conversation.
+     */
+    Conversation title(String text);
 
     /**
      * Specifies a clause for when this conversation should end. There's no limit to the amount of clauses you can add.
@@ -44,17 +52,17 @@ public interface Conversation {
     Conversation chatVisibility(ChatVisibility chatVisibility);
 
     /**
-     * A name that gets prepended to each line of this conversation.
+     * Text which gets prepended to each line of this conversation.
      * <p>
-     * example; name = Fish: prompt = Hello
+     * example; text = Fish: prompt = Hello, I am a fish
      * <p>
-     * Result = Fish: Hello
+     * Result = Fish: Hello, I am a fish
      * <p>
      *
-     * @param name The name.
+     * @param text The text.
      * @return The conversation.
      */
-    Conversation prefix(String name);
+    Conversation prefix(String text);
 
     /**
      * The text that gets displayed when the conversation is finished/complete.
@@ -124,9 +132,9 @@ public interface Conversation {
     ConversationAudience getAudience();
 
     /**
-     * Gets the current prompt name in this conversation.
+     * Gets the current prompt text in this conversation.
      *
-     * @return The text name of the prompt.
+     * @return The text of the prompt.
      */
-    String getCurrentPromptName();
+    String getCurrentPromptText();
 }

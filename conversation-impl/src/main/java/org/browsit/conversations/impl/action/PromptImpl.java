@@ -18,6 +18,7 @@ public class PromptImpl<A> implements Prompt<A> {
 
     private final ConversationImpl conversation;
     private final Component text;
+    private Component title;
     private int id;
 
     private int attempts = 3;
@@ -118,7 +119,7 @@ public class PromptImpl<A> implements Prompt<A> {
         return this;
     }
 
-    // ** INTERAL METHODS **//
+    // ** INTERNAL METHODS **//
 
     public void display() {
         if (this.conversation.getPrefix() != null) {
@@ -181,7 +182,11 @@ public class PromptImpl<A> implements Prompt<A> {
         this.id = id;
     }
 
-    public String getName() {
+    public String getTitle() {
+        return LegacyComponentSerializer.legacyAmpersand().serialize(title);
+    }
+
+    public String getText() {
         return LegacyComponentSerializer.legacyAmpersand().serialize(text);
     }
 }
