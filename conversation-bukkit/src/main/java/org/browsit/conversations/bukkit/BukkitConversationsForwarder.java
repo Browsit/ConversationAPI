@@ -1,5 +1,8 @@
 package org.browsit.conversations.bukkit;
 
+import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.function.Consumer;
 import org.browsit.conversations.api.Conversations;
 import org.browsit.conversations.api.data.ChatVisibility;
 import org.browsit.conversations.api.action.ConversationsForwarder;
@@ -10,21 +13,35 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Iterator;
 
 /**
  * @author Illusion created on 2/9/2023
  * <p>
  * The Bukkit {@link ConversationsForwarder}.
  */
-final class BukkitConversationsForwarder implements ConversationsForwarder<JavaPlugin>, Listener {
+final class BukkitConversationsForwarder implements ConversationsForwarder<JavaPlugin, Player>, Listener {
+
+    private static final String FOLIA_GLOBAL_REGION_SCHEDULER = "io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler";
+    private static final String FOLIA_ENTITY_SCHEDULER = "io.papermc.paper.threadedregions.scheduler.EntityScheduler";
 
     private JavaPlugin base;
+    private final boolean folia;
+    private Method getSchedulerMethod;
+    private Method entitySchedulerRunMethod;
 
     BukkitConversationsForwarder() {
-        // Prevent instantiation
+        this.folia = isFolia();
+        if (this.folia) {
+            try {
+                this.getSchedulerMethod = Player.class.getMethod("getScheduler");
+                this.entitySchedulerRunMethod = Class.forName(FOLIA_ENTITY_SCHEDULER)
+                        .getMethod("run", Plugin.class, Consumer.class);
+            } catch (ReflectiveOperationException e) {
+                throw new IllegalStateException("Unable to initialize Folia scheduler", e);
+            }
+        }
     }
 
     @Override
@@ -58,7 +75,7 @@ final class BukkitConversationsForwarder implements ConversationsForwarder<JavaP
                 chatter.sendMessage(event.getMessage());
             }
 
-            this.forwardInput(conversation, event.getMessage(), () -> event.setCancelled(true));
+            this.forwardInput(conversation, event.getMessage(), chatter, () -> event.setCancelled(true));
         });
     }
 
@@ -68,10 +85,43 @@ final class BukkitConversationsForwarder implements ConversationsForwarder<JavaP
             return; // Not initialized yet
         }
 
+        // No player reference, so thread-correct scheduling (e.g. Folia) cannot be applied
         Bukkit.getScheduler().runTask(this.base, () -> {
             conversation.handleInput(input);
         });
 
         onSuccess.run();
+    }
+
+    @Override
+    public void forwardInput(Conversation conversation, String input, Player player, Runnable onSuccess) {
+        if (this.base == null) {
+            return; // Not initialized yet
+        }
+
+        if (this.folia) {
+            // Folia: run on the thread that owns the player's region
+            this.scheduleFolia(conversation, input, player);
+        } else {
+            forwardInput(conversation, input, onSuccess);
+        }
+    }
+
+    private static boolean isFolia() {
+        try {
+            Class.forName(FOLIA_GLOBAL_REGION_SCHEDULER);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    private void scheduleFolia(Conversation conversation, String input, Player player) {
+        try {
+            final Object entityScheduler = this.getSchedulerMethod.invoke(player);
+            this.entitySchedulerRunMethod.invoke(entityScheduler, this.base, (Consumer<Object>) task -> conversation.handleInput(input));
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("Failed to schedule chat input on Folia", e);
+        }
     }
 }
