@@ -30,18 +30,41 @@ final class BukkitConversationsForwarder implements ConversationsForwarder<JavaP
     private final boolean folia;
     private Method getSchedulerMethod;
     private Method entitySchedulerRunMethod;
+    private boolean entitySchedulerRunTakesRetired;
 
     BukkitConversationsForwarder() {
         this.folia = isFolia();
         if (this.folia) {
             try {
                 this.getSchedulerMethod = Player.class.getMethod("getScheduler");
-                this.entitySchedulerRunMethod = Class.forName(FOLIA_ENTITY_SCHEDULER)
-                        .getMethod("run", Plugin.class, Consumer.class);
+                this.initFoliaRunMethod();
             } catch (ReflectiveOperationException e) {
                 throw new IllegalStateException("Unable to initialize Folia scheduler", e);
             }
         }
+    }
+
+    private void initFoliaRunMethod() throws ReflectiveOperationException {
+        final Class<?> entitySchedulerClass = Class.forName(FOLIA_ENTITY_SCHEDULER);
+        for (final Method method : entitySchedulerClass.getMethods()) {
+            if (!method.getName().equals("run")) {
+                continue;
+            }
+            final Class<?>[] params = method.getParameterTypes();
+            if (params.length < 2 || params.length > 3) {
+                continue;
+            }
+            if (!params[0].isAssignableFrom(Plugin.class) || !params[1].isAssignableFrom(Consumer.class)) {
+                continue;
+            }
+            if (params.length == 3 && params[2] != Runnable.class) {
+                continue;
+            }
+            this.entitySchedulerRunMethod = method;
+            this.entitySchedulerRunTakesRetired = params.length == 3;
+            return;
+        }
+        throw new NoSuchMethodException("No compatible EntityScheduler#run method found");
     }
 
     @Override
@@ -119,7 +142,12 @@ final class BukkitConversationsForwarder implements ConversationsForwarder<JavaP
     private void scheduleFolia(Conversation conversation, String input, Player player) {
         try {
             final Object entityScheduler = this.getSchedulerMethod.invoke(player);
-            this.entitySchedulerRunMethod.invoke(entityScheduler, this.base, (Consumer<Object>) task -> conversation.handleInput(input));
+            final Consumer<Object> task = ignored -> conversation.handleInput(input);
+            if (this.entitySchedulerRunTakesRetired) {
+                this.entitySchedulerRunMethod.invoke(entityScheduler, this.base, task, null);
+            } else {
+                this.entitySchedulerRunMethod.invoke(entityScheduler, this.base, task);
+            }
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException("Failed to schedule chat input on Folia", e);
         }
