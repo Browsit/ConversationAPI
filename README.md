@@ -1,8 +1,28 @@
 # Conversation API
-A compact API for conversations on Bukkit and Fabric servers, built with [Kyori's Adventure](https://github.com/KyoriPowered/adventure).
+A compact API for conversations on Bukkit and Paper servers, built with [Kyori's Adventure](https://github.com/KyoriPowered/adventure). Requires Java 8 or newer.
+
+For conversations on Fabric servers, see https://github.com/Browsit/ConversationAPI-Fabric
+
+## Depend
+```xml
+   <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+   </repositories>
+```
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>com.github.Browsit.ConversationAPI</groupId>
+            <artifactId>conversation-bukkit</artifactId>
+            <version>LATEST</version>
+        </dependency>
+    </dependencies>
+```
 
 ## Setup
-Conversations for Bukkit:
 ```java
     @Override
     public void onEnable() {
@@ -12,20 +32,6 @@ Conversations for Bukkit:
     @Override
     public void onDisable() {
         BukkitConversations.cleanUp();
-    }
-```
-
-Conversations for Fabric:
-```java
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-            Conversations.init(AdventureConversationsProvider.create(FabricServerAudiences.of(server)));
-            new FabricConversationsFowarder().register(server);
-        });
-        ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
-            Conversations.cleanUp();
-        });
     }
 ```
 
