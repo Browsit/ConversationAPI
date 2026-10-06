@@ -10,9 +10,9 @@
     <name>Conversation API</name>
     <url>https://github.com/Browsit/ConversationAPI</url>
     <modules>
-        <module>conversation-api</module>
-        <module>conversation-bukkit</module>
-        <module>conversation-impl</module>
+        <module>api</module>
+        <module>bukkit</module>
+        <module>impl</module>
     </modules>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

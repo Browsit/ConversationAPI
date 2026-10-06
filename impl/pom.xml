@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>org.browsit</groupId>
-  <artifactId>conversation-impl</artifactId>
+  <artifactId>impl</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
@@ -26,7 +26,7 @@
     </dependency>
     <dependency>
       <groupId>org.browsit</groupId>
-      <artifactId>conversation-api</artifactId>
+      <artifactId>api</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>

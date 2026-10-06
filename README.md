@@ -16,7 +16,7 @@ For conversations on Fabric servers, see https://github.com/Browsit/Conversation
     <dependencies>
         <dependency>
             <groupId>com.github.Browsit.ConversationAPI</groupId>
-            <artifactId>conversation-bukkit</artifactId>
+            <artifactId>bukkit</artifactId>
             <version>-SNAPSHOT</version>
         </dependency>
     </dependencies>
